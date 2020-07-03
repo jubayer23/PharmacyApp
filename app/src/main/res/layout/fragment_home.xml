@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragment.HomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <FrameLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp">
+
+        <com.example.pharmacyapp.CustomView.AutoCompleteLoading
+            android:id="@+id/ac_generics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:hint="Generic Name"
+            android:inputType="text"
+            android:maxLines="1"/>
+        the te
+        <ProgressBar
+            android:id="@+id/ac_generics_loading"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="15dp"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+
+    <FrameLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp">
+
+        <com.example.pharmacyapp.CustomView.AutoCompleteLoading
+            android:id="@+id/ac_companies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:hint="Company Name"
+            android:inputType="text"
+            android:maxLines="1"/>
+        the te
+        <ProgressBar
+            android:id="@+id/ac_companies_loading"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="15dp"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        android:inputType="text"
+        android:maxLines="1"
+        android:id="@+id/ed_medicine_name"
+        android:imeOptions="actionSearch"
+        android:hint="Medicine Name"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_medcine_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        />
+
+</LinearLayout>

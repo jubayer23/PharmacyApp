@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_deep_extreme_2">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ll_form"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:text="SIGNUP"
+                android:textColor="@color/white"
+                android:textSize="35sp"
+                android:textStyle="bold" />
+
+
+            <EditText
+                android:id="@+id/ed_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:backgroundTint="@android:color/darker_gray"
+                android:hint="Name"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/gray_light" />
+
+
+            <EditText
+                android:id="@+id/ed_mobile_number"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:backgroundTint="@android:color/darker_gray"
+                android:hint="Mobile Number"
+                android:inputType="number"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/gray_light" />
+
+            <EditText
+                android:id="@+id/ed_email"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:backgroundTint="@android:color/darker_gray"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/gray_light" />
+
+            <EditText
+                android:id="@+id/ed_password"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:backgroundTint="@android:color/darker_gray"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/gray_light" />
+
+            <EditText
+                android:id="@+id/ed_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:backgroundTint="@android:color/darker_gray"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/gray_light" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+
+                android:background="@drawable/square_edittext_gray">
+
+                <Spinner
+                    android:id="@+id/sp_user_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:popupBackground="@color/gray"
+                    android:textSize="25sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="5dp"
+                    android:src="@drawable/spinner_arrow" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ll_employee_form"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/square_edittext_gray">
+
+                    <Spinner
+                        android:id="@+id/sp_company_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:popupBackground="@color/gray"
+                        android:textSize="25sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:padding="5dp"
+                        android:src="@drawable/spinner_arrow" />
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/ed_company_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+
+                    android:backgroundTint="@android:color/darker_gray"
+                    android:hint="Company Code"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray_light" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_chemist_form"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+
+                <EditText
+                    android:id="@+id/ed_shop_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+
+                    android:backgroundTint="@android:color/darker_gray"
+                    android:hint="Shop Name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray_light" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/square_edittext_gray"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Address"
+                        android:paddingLeft="10dp"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="18sp"/>
+
+                    <EditText
+                        android:id="@+id/ed_house_no"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+
+                        android:backgroundTint="@android:color/darker_gray"
+                        android:hint="House No"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/gray_light" />
+
+
+                    <EditText
+                        android:id="@+id/ed_street"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+
+                        android:backgroundTint="@android:color/darker_gray"
+                        android:hint="Street"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/gray_light" />
+
+                    <EditText
+                        android:id="@+id/ed_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+
+                        android:backgroundTint="@android:color/darker_gray"
+                        android:hint="City"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/gray_light" />
+                </LinearLayout>
+
+
+                <EditText
+                    android:id="@+id/ed_license_num"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+
+                    android:backgroundTint="@android:color/darker_gray"
+                    android:hint="License Number"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray_light" />
+
+
+                <EditText
+                    android:id="@+id/ed_registration_num"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+
+                    android:backgroundTint="@android:color/darker_gray"
+                    android:hint="Registration Number"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray_light" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_register"
+                style="@style/btnSubmitOrDoneLarge"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:text="Register"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
