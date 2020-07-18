@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pharmacy</string>
+    <string name="app_name">TriKon</string>
     <string name="action_submit">Submit</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -10,6 +10,15 @@
 
 
     <string-array name="userTypes">
+        <item>Chemist</item>
+        <item>Employee</item>
+
+    </string-array>
+
+
+    <string-array name="userTypeVisibility">
+        <item>All</item>
+        <item>Admin</item>
         <item>Chemist</item>
         <item>Employee</item>
 

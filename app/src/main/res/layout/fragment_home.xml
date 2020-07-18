@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="2dp">
 
-        <com.example.pharmacyapp.CustomView.AutoCompleteLoading
+        <com.trikon.medicine.CustomView.AutoCompleteLoading
             android:id="@+id/ac_generics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="2dp">
 
-        <com.example.pharmacyapp.CustomView.AutoCompleteLoading
+        <com.trikon.medicine.CustomView.AutoCompleteLoading
             android:id="@+id/ac_companies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
