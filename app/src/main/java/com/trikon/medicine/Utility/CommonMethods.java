@@ -1,5 +1,6 @@
 package com.trikon.medicine.Utility;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,6 +12,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -304,5 +306,20 @@ public class CommonMethods {
     private final static AtomicInteger c = new AtomicInteger(0);
     public static int getID() {
         return c.incrementAndGet();
+    }
+
+    public static void hideKeybaord(Activity activity){
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    public static void hideKeybaord(EditText editText){
+        InputMethodManager imm =
+                (InputMethodManager)editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive())
+            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 }

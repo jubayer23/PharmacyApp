@@ -17,14 +17,19 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.trikon.medicine.Utility.CommonMethods;
 import com.trikon.medicine.Utility.DeviceInfoUtils;
 import com.trikon.medicine.alertbanner.AlertDialogForAnything;
 import com.trikon.medicine.appdata.GlobalAppAccess;
 import com.trikon.medicine.appdata.MydApplication;
 import com.trikon.medicine.model.Company;
 import com.trikon.medicine.model.CompanyResponse;
+import com.trikon.medicine.model.DistrictResponse;
+import com.trikon.medicine.model.DivisionResponse;
 import com.trikon.medicine.model.Generic;
 import com.trikon.medicine.model.GenericResponse;
+import com.trikon.medicine.model.Thana;
+import com.trikon.medicine.model.ThanaResponse;
 import com.trikon.medicine.model.User;
 import com.trikon.medicine.model.UserLoginResponse;
 
@@ -57,8 +62,19 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
     private Button btn_register;
 
 
-    private EditText ed_name, ed_mobile_number, ed_email, ed_password, ed_confirm_password, ed_company_code, ed_shop_name, ed_house_no, ed_street, ed_city, ed_license_num, ed_registration_num;
+    private EditText ed_name, ed_mobile_number, ed_email, ed_password, ed_confirm_password, ed_company_code, ed_shop_name, ed_house_no, ed_street, ed_license_num, ed_registration_num;
 
+
+    private Spinner sp_thana, sp_district, sp_division;
+
+    List<Thana> list_thana = new ArrayList<>();
+    List<Thana> list_district = new ArrayList<>();
+    List<Thana> list_division = new ArrayList<>();
+
+    private ArrayAdapter<Thana> adapterSpThana, adapterSpDistrict, adapterSpDivision;
+    private static final String KEY_SELECT_THANA = "Select Thana";
+    private static final String KEY_SELECT_DISTRICT = "Select District";
+    private static final String KEY_SELECT_DIVISION = "Select Division";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,12 +113,21 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
         ed_shop_name = findViewById(R.id.ed_shop_name);
         ed_house_no = findViewById(R.id.ed_house_no);
         ed_street = findViewById(R.id.ed_street);
-        ed_city = findViewById(R.id.ed_city);
+        //ed_city = findViewById(R.id.ed_city);
         ed_license_num = findViewById(R.id.ed_license_num);
         ed_registration_num = findViewById(R.id.ed_registration_num);
 
         btn_register = findViewById(R.id.btn_register);
         btn_register.setOnClickListener(this);
+
+        sp_thana = (Spinner) findViewById(R.id.sp_thana);
+        sp_thana.setOnItemSelectedListener(this);
+
+        sp_district = (Spinner) findViewById(R.id.sp_districts);
+        sp_district.setOnItemSelectedListener(this);
+
+        sp_division = (Spinner) findViewById(R.id.sp_division);
+        sp_division.setOnItemSelectedListener(this);
     }
 
     private void initAdapter() {
@@ -126,6 +151,31 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
         spAdapterCompanyName = new ArrayAdapter<Company>
                 (this, R.layout.spinner_item, list_companies);
         sp_company_name.setAdapter(spAdapterCompanyName);
+
+
+        //list_thana.add(KEY_SELECT_THANA);
+        Thana t11 = new Thana(KEY_SELECT_THANA);
+        list_thana.add(t11);
+        //list_thana.addAll(Arrays.asList(getResources().getStringArray(R.array.userTypes)));
+        adapterSpThana = new ArrayAdapter<Thana>
+                (this, R.layout.spinner_item_black_text, list_thana);
+        sp_thana.setAdapter(adapterSpThana);
+
+        //list_district.add(KEY_SELECT_DISTRICT);
+        //list_thana.addAll(Arrays.asList(getResources().getStringArray(R.array.userTypes)));
+        Thana t2 = new Thana(KEY_SELECT_DISTRICT);
+        list_district.add(t2);
+        adapterSpDistrict = new ArrayAdapter<Thana>
+                (this, R.layout.spinner_item_black_text, list_district);
+        sp_district.setAdapter(adapterSpDistrict);
+
+        // list_division.add(KEY_SELECT_DIVISION);
+        //list_thana.addAll(Arrays.asList(getResources().getStringArray(R.array.userTypes)));
+        Thana t3 = new Thana(KEY_SELECT_DIVISION);
+        list_division.add(t3);
+        adapterSpDivision = new ArrayAdapter<Thana>
+                (this, R.layout.spinner_item_black_text, list_division);
+        sp_division.setAdapter(adapterSpDivision);
 
 
     }
@@ -152,6 +202,19 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
 
             }
 
+        } if(adapterView.getId() == R.id.sp_division && i != 0){
+            Log.d("DEBUG", "its called");
+            int id2 = list_division.get(i).getId();
+            sendRequestToGetDistrict(id2);
+             CommonMethods.hideKeybaord(this);
+
+
+        }else if(adapterView.getId() == R.id.sp_districts && i != 0){
+            int id2 = list_district.get(i).getId();
+            sendRequestToGetThana(id2);
+            CommonMethods.hideKeybaord(this);
+
+
         }
     }
 
@@ -176,12 +239,8 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
             ed_mobile_number.setError("Required");
             return false;
         }
-        if(ed_email.getText().toString().isEmpty()){
 
-            ed_email.setError("Required");
-            return false;
-        }
-        if(!android.util.Patterns.EMAIL_ADDRESS.matcher(ed_email.getText().toString()).matches()){
+        if(!ed_email.getText().toString().isEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(ed_email.getText().toString()).matches()){
 
             ed_email.setError("Invalid Email!");
             return false;
@@ -233,19 +292,6 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
             if(ed_street.getText().toString().isEmpty()){
 
                 ed_street.setError("Required");
-                return false;
-            }
-            if(ed_city.getText().toString().isEmpty()){
-
-                ed_city.setError("Required");
-                return false;
-            } if(ed_license_num.getText().toString().isEmpty()){
-
-                ed_license_num.setError("Required");
-                return false;
-            }if(ed_registration_num.getText().toString().isEmpty()){
-
-                ed_registration_num.setError("Required");
                 return false;
             }
         }
@@ -321,17 +367,20 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("name", ed_name.getText().toString());
                 params.put("mobile", ed_mobile_number.getText().toString());
-                params.put("email", ed_email.getText().toString());
+                if(!ed_email.getText().toString().isEmpty())params.put("email", ed_email.getText().toString());
                 params.put("password", ed_password.getText().toString());
                 params.put("password2", ed_password.getText().toString());
                 params.put("type", String.valueOf(FORM_TYPE));
                 if(FORM_TYPE == FORM_TYPE_CHEMIST){
                     params.put("shopName", ed_shop_name.getText().toString());
-                    params.put("addressHouse", ed_house_no.getText().toString());
-                    params.put("addressStreet", ed_street.getText().toString());
-                    params.put("addressCity", ed_city.getText().toString());
-                    params.put("licenseNo", ed_license_num.getText().toString());
-                    params.put("pharmacistRegNo", ed_registration_num.getText().toString());
+                    params.put("houseNo", ed_house_no.getText().toString());
+                    params.put("street", ed_street.getText().toString());
+                    params.put("thana", sp_thana.getSelectedItem().toString());
+                    params.put("district", sp_district.getSelectedItem().toString());
+                    params.put("division", sp_division.getSelectedItem().toString());
+                   // params.put("addressCity", ed_city.getText().toString());
+                    if(!ed_license_num.getText().toString().isEmpty())params.put("licenseNo", ed_license_num.getText().toString());
+                    if(!ed_registration_num.getText().toString().isEmpty())params.put("pharmacistRegNo", ed_registration_num.getText().toString());
                     params.put("companyId", "1");
                     params.put("companySecretCode", "213");
 
@@ -387,7 +436,7 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
                             spAdapterCompanyName.notifyDataSetChanged();
 
 
-
+                        sendRequestToGetDivision();
 
                     }
                 }, new com.android.volley.Response.ErrorListener() {
@@ -410,8 +459,182 @@ public class RegistrationActivity extends BaseActivity implements AdapterView.On
 
                 return params;
             }
-        }
-                ;
+        };
+
+        req.setRetryPolicy(new DefaultRetryPolicy(60000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // TODO Auto-generated method stub
+        MydApplication.getInstance().addToRequestQueue(req);
+    }
+
+    private void sendRequestToGetThana(int id){
+
+
+        showProgressDialog("Loading..", true, false);
+
+        final StringRequest req = new StringRequest(Request.Method.POST, GlobalAppAccess.URL_GET_THANA,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Log.d("DEBUG",response);
+
+                        dismissProgressDialog();
+
+                        ThanaResponse login = MydApplication.gson.fromJson(response, ThanaResponse.class);
+
+                        if(login.getStatus()){
+
+                            list_thana.clear();
+
+                            Thana t1 = new Thana(KEY_SELECT_THANA);
+                            list_thana.add(t1);
+
+
+                            list_thana.addAll(login.getThanas());
+                            adapterSpThana.notifyDataSetChanged();
+
+                            //sendRequestToGetDistrict();
+
+
+                        }else{
+                            AlertDialogForAnything.showAlertDialogWhenComplte(RegistrationActivity.this,"Error",login.getMessage(),false);
+                        }
+
+
+
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                dismissProgressDialog();
+
+                AlertDialogForAnything.showAlertDialogWhenComplte(RegistrationActivity.this, "Error", "Network problem. please try again!", false);
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("districtId", String.valueOf(id));
+
+                return params;
+            }
+        };
+
+        req.setRetryPolicy(new DefaultRetryPolicy(60000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // TODO Auto-generated method stub
+        MydApplication.getInstance().addToRequestQueue(req);
+    }
+
+    private void sendRequestToGetDistrict(int id){
+
+
+        showProgressDialog("Loading..", true, false);
+
+        final StringRequest req = new StringRequest(Request.Method.POST, GlobalAppAccess.URL_GET_DISTRIC,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Log.d("DEBUG",response);
+
+                        dismissProgressDialog();
+
+                        DistrictResponse login = MydApplication.gson.fromJson(response, DistrictResponse.class);
+
+                        if(login.getStatus()){
+
+                            list_district.clear();
+
+                            Thana t2 = new Thana(KEY_SELECT_DISTRICT);
+                            list_district.add(t2);
+
+                            list_district.addAll(login.getThanas());
+                            adapterSpDistrict.notifyDataSetChanged();
+
+                            sendRequestToGetDivision();
+
+
+                        }else{
+                            AlertDialogForAnything.showAlertDialogWhenComplte(RegistrationActivity.this,"Error",login.getMessage(),false);
+                        }
+
+
+
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                dismissProgressDialog();
+
+                AlertDialogForAnything.showAlertDialogWhenComplte(RegistrationActivity.this, "Error", "Network problem. please try again!", false);
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("divisionId", String.valueOf(id));
+
+                return params;
+            }
+        };
+
+        req.setRetryPolicy(new DefaultRetryPolicy(60000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // TODO Auto-generated method stub
+        MydApplication.getInstance().addToRequestQueue(req);
+    }
+
+    private void sendRequestToGetDivision(){
+
+
+        showProgressDialog("Loading..", true, false);
+
+        final StringRequest req = new StringRequest(Request.Method.POST, GlobalAppAccess.URL_GET_DIVISION,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Log.d("DEBUG",response);
+
+                        dismissProgressDialog();
+
+                        DivisionResponse login = MydApplication.gson.fromJson(response, DivisionResponse.class);
+
+                        if(login.getStatus()){
+
+                            list_division.addAll(login.getThanas());
+                            adapterSpDivision.notifyDataSetChanged();
+
+                        }else{
+                            AlertDialogForAnything.showAlertDialogWhenComplte(RegistrationActivity.this,"Error",login.getMessage(),false);
+                        }
+
+
+
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                dismissProgressDialog();
+
+                AlertDialogForAnything.showAlertDialogWhenComplte(RegistrationActivity.this, "Error", "Network problem. please try again!", false);
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                return params;
+            }
+        };
 
         req.setRetryPolicy(new DefaultRetryPolicy(60000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

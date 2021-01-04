@@ -9,7 +9,7 @@ public class MedicineResponse extends BaseResponse implements Serializable
 {
 
 
-    @SerializedName("medicines")
+    @SerializedName("offers")
     @Expose
     private List<Medicine> medicines = null;
     private final static long serialVersionUID = -4049326240031855229L;

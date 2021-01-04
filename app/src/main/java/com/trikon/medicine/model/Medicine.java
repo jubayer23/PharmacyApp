@@ -22,14 +22,32 @@ public class Medicine implements Serializable
     @SerializedName("strength")
     @Expose
     private String strength;
-    @SerializedName("dosage")
+    @SerializedName("dosageForm")
     @Expose
     private String dosage;
     @SerializedName("useFor")
     @Expose
     private String useFor;
+    @SerializedName("startDate")
+    @Expose
+    private String startDate;
+    @SerializedName("endDate")
+    @Expose
+    private String endDate;
+    @SerializedName("imageUrl")
+    @Expose
+    private String imageUrl;
+    @SerializedName("hotNews")
+    @Expose
+    private boolean hotNews;
     private final static long serialVersionUID = 3614445464142290791L;
 
+    @SerializedName("manufacturerName")
+    @Expose
+    private String companyName;
+    @SerializedName("genericName")
+    @Expose
+    private String genericName;
     public Integer getId() {
         return id;
     }
@@ -86,4 +104,51 @@ public class Medicine implements Serializable
         this.useFor = useFor;
     }
 
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public boolean isHotNews() {
+        return hotNews;
+    }
+
+    public void setHotNews(boolean hotNews) {
+        this.hotNews = hotNews;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getGenericName() {
+        return genericName;
+    }
+
+    public void setGenericName(String genericName) {
+        this.genericName = genericName;
+    }
 }

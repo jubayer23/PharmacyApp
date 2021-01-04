@@ -1,11 +1,13 @@
 package com.trikon.medicine.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,9 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.trikon.medicine.CustomView.RecyclerItemClickListener;
+import com.trikon.medicine.EventDetailsActivity;
+import com.trikon.medicine.MedicineDetails;
 import com.trikon.medicine.R;
 import com.trikon.medicine.adapter.EventListAdapter;
 import com.trikon.medicine.alertbanner.AlertDialogForAnything;
@@ -43,6 +48,8 @@ public class EventListFragment extends BaseFragment {
     private RecyclerView rvItemList;
     private EventListAdapter adapter;
     List<Event> items = new ArrayList<>();
+
+    private SwipeRefreshLayout swipeContainer;
 
    // private OnFragmentInteractionListener mListener;
 
@@ -90,9 +97,33 @@ public class EventListFragment extends BaseFragment {
 
         rvItemList = view.findViewById(R.id.rv_event_list);
 
+         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                refreshScreen();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         initRecyleView();
 
-        sendRequestForGetEventList();
+        //sendRequestForGetEventList();
+        swipeContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                sendRequestForGetEventList();
+                swipeContainer.setRefreshing(true);
+            }
+        });
     }
 
     private void initRecyleView(){
@@ -100,9 +131,25 @@ public class EventListFragment extends BaseFragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvItemList.setLayoutManager(mLayoutManager);
 
+
         //Set Adapter
         adapter = new EventListAdapter(items);
         rvItemList.setAdapter(adapter);
+
+        rvItemList.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), rvItemList ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // do whatever
+                        Intent intent = new Intent(getActivity(), EventDetailsActivity.class);
+                        intent.putExtra("event", items.get(position));
+                        startActivity(intent);
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
 
 
 
@@ -113,7 +160,7 @@ public class EventListFragment extends BaseFragment {
 
         // url = url + "?" + "email=" + email + "&password=" + password;
         // TODO Auto-generated method stub
-        showProgressDialog("Loading..", true, false);
+        //showProgressDialog("Loading..", true, false);
 
         final StringRequest req = new StringRequest(Request.Method.POST, GlobalAppAccess.URL_EVENT_LIST,
                 new com.android.volley.Response.Listener<String>() {
@@ -122,11 +169,14 @@ public class EventListFragment extends BaseFragment {
                         //Log.d("DEBUG",response);
 
                         dismissProgressDialog();
+                        swipeContainer.setRefreshing(false);
 
                         EventResponse login = MydApplication.gson.fromJson(response, EventResponse.class);
 
+
                         if(login.getStatus()){
 
+                            items.clear();
                             items.addAll(login.getEvents());
                             adapter.notifyDataSetChanged();
 
@@ -142,6 +192,8 @@ public class EventListFragment extends BaseFragment {
             public void onErrorResponse(VolleyError error) {
 
                 dismissProgressDialog();
+
+                swipeContainer.setRefreshing(false);
 
                AlertDialogForAnything.showAlertDialogWhenComplte(getActivity(), "Error", "Network problem. please try again!", false);
 
@@ -163,5 +215,16 @@ public class EventListFragment extends BaseFragment {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // TODO Auto-generated method stub
         MydApplication.getInstance().addToRequestQueue(req);
+    }
+
+    public void refreshScreen(){
+        swipeContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                sendRequestForGetEventList();
+                swipeContainer.setRefreshing(true);
+            }
+        });
+
     }
 }

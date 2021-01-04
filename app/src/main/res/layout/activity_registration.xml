@@ -62,7 +62,7 @@
                 android:layout_height="50dp"
 
                 android:backgroundTint="@android:color/darker_gray"
-                android:hint="Email"
+                android:hint="Email (Optional)"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:paddingLeft="10dp"
@@ -169,7 +169,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_chemist_form"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -236,6 +236,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
 
+                        android:visibility="gone"
                         android:backgroundTint="@android:color/darker_gray"
                         android:hint="City"
                         android:inputType="text"
@@ -243,6 +244,89 @@
                         android:paddingLeft="10dp"
                         android:textColor="@color/white"
                         android:textColorHint="@color/gray_light" />
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+
+                        android:background="@drawable/square_edittext_gray">
+
+                        <Spinner
+                            android:id="@+id/sp_division"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@null"
+                            android:popupBackground="@color/white"
+                            android:textSize="25sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:padding="5dp"
+                            android:src="@drawable/spinner_arrow" />
+                    </RelativeLayout>
+
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/square_edittext_gray">
+
+                        <Spinner
+                            android:id="@+id/sp_districts"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@null"
+                            android:popupBackground="@color/white"
+                            android:textSize="25sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:padding="5dp"
+                            android:src="@drawable/spinner_arrow" />
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/square_edittext_gray">
+
+                        <Spinner
+                            android:id="@+id/sp_thana"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@null"
+                            android:popupBackground="@color/white"
+                            android:textSize="25sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:padding="5dp"
+                            android:src="@drawable/spinner_arrow" />
+                    </RelativeLayout>
                 </LinearLayout>
 
 
@@ -252,7 +336,7 @@
                     android:layout_height="50dp"
 
                     android:backgroundTint="@android:color/darker_gray"
-                    android:hint="License Number"
+                    android:hint="Trade License No (Optional)"
                     android:inputType="text"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
@@ -266,7 +350,7 @@
                     android:layout_height="50dp"
 
                     android:backgroundTint="@android:color/darker_gray"
-                    android:hint="Registration Number"
+                    android:hint="Pharmacist Reg No (Optional)"
                     android:inputType="text"
                     android:maxLines="1"
                     android:paddingLeft="10dp"

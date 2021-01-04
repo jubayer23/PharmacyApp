@@ -48,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_white"
+            android:visibility="gone"
             fab:fab_label="Add Event"
             fab:fab_size="mini" />
 

@@ -7,8 +7,8 @@ public class GlobalAppAccess {
 
     public static final String KEY_ORDER_NOTIFICATION = "notification_order";
     public static final String APP_NAME = "PharmacyApp";
-    private static final String BASE_URL = "http://107.180.88.30:8080/api";
-    public static final String BASE_URL_2 = "http://107.180.88.30:8080";
+    private static final String BASE_URL = "http://144.217.186.122:8080/api";
+    public static final String BASE_URL_2 = "http://144.217.186.122:8080";
 
     public static final String URL_LOGIN = BASE_URL + "/login";
     public static final String URL_REGISTRATION = BASE_URL + "/register";
@@ -20,7 +20,8 @@ public class GlobalAppAccess {
     public static final String URL_GET_THANA = BASE_URL + "/getThanas";
     public static final String URL_GET_DISTRIC = BASE_URL + "/getDistricts";
     public static final String URL_GET_DIVISION = BASE_URL + "/getDivisions";
-    public static final String URL_SEARCH_MEDICINE = BASE_URL + "/searchMedicine";
+    public static final String URL_SEARCH_MEDICINE = BASE_URL + "/searchOffer";
+    public static final String URL_RESET_PASSWORD = BASE_URL + "/support";
     public static final String URL_PENDING_ORDER = BASE_URL + "/getPendingOrders";
     public static final String URL_START_ORDER = BASE_URL + "/startOrder";
     public static final String URL_GET_LICENSE_HISTORY = BASE_URL + "/ParkingSentinel/GetLicenseHistory";

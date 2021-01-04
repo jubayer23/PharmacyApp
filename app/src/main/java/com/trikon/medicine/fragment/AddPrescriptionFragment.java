@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -38,6 +39,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.trikon.medicine.BuildConfig;
 import com.trikon.medicine.R;
 import com.trikon.medicine.Utility.AccessDirectory;
+import com.trikon.medicine.Utility.CommonMethods;
 import com.trikon.medicine.Utility.CompressImage;
 import com.trikon.medicine.alertbanner.AlertDialogForAnything;
 import com.trikon.medicine.appdata.GlobalAppAccess;
@@ -165,7 +167,8 @@ public class AddPrescriptionFragment extends BaseDialogFragment implements View.
 
         initAdapter();
 
-        sendRequestToGetThana();
+        //sendRequestToGetThana();
+        sendRequestToGetDivision();
 
     }
 
@@ -392,9 +395,32 @@ public class AddPrescriptionFragment extends BaseDialogFragment implements View.
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        int id = adapterView.getId();
+        //int id = adapterView.getId();
 
         String selected_value = adapterView.getItemAtPosition(i).toString();
+
+       // Log.d("DEBUG", "its called 1");
+
+        if(adapterView.getId() == R.id.sp_division && i != 0){
+            Log.d("DEBUG", "its called");
+            int id = list_division.get(i).getId();
+            sendRequestToGetDistrict(id);
+           // CommonMethods.hideKeybaord(getActivity());
+
+            CommonMethods.hideKeybaord(ed_doctor_degree);
+            CommonMethods.hideKeybaord(ed_dr_name);
+            CommonMethods.hideKeybaord(ed_house_no);
+            CommonMethods.hideKeybaord(ed_street);
+        }else if(adapterView.getId() == R.id.sp_districts && i != 0){
+            int id = list_district.get(i).getId();
+            sendRequestToGetThana(id);
+            CommonMethods.hideKeybaord(getActivity());
+
+            CommonMethods.hideKeybaord(ed_doctor_degree);
+            CommonMethods.hideKeybaord(ed_dr_name);
+            CommonMethods.hideKeybaord(ed_house_no);
+            CommonMethods.hideKeybaord(ed_street);
+        }
 
     }
 
@@ -403,7 +429,7 @@ public class AddPrescriptionFragment extends BaseDialogFragment implements View.
 
     }
 
-    private void sendRequestToGetThana(){
+    private void sendRequestToGetThana(int id){
 
 
         showProgressDialog("Loading..", true, false);
@@ -414,16 +440,22 @@ public class AddPrescriptionFragment extends BaseDialogFragment implements View.
                     public void onResponse(String response) {
                         //Log.d("DEBUG",response);
 
-                       // dismissProgressDialog();
+                       dismissProgressDialog();
 
                         ThanaResponse login = MydApplication.gson.fromJson(response, ThanaResponse.class);
 
                         if(login.getStatus()){
 
+                            list_thana.clear();
+
+                            Thana t1 = new Thana(KEY_SELECT_THANA);
+                            list_thana.add(t1);
+
+
                             list_thana.addAll(login.getThanas());
                             adapterSpThana.notifyDataSetChanged();
 
-                            sendRequestToGetDistrict();
+                            //sendRequestToGetDistrict();
 
 
                         }else{
@@ -447,6 +479,7 @@ public class AddPrescriptionFragment extends BaseDialogFragment implements View.
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("districtId", String.valueOf(id));
 
                 return params;
             }
@@ -458,7 +491,7 @@ public class AddPrescriptionFragment extends BaseDialogFragment implements View.
         MydApplication.getInstance().addToRequestQueue(req);
     }
 
-    private void sendRequestToGetDistrict(){
+    private void sendRequestToGetDistrict(int id){
 
 
         showProgressDialog("Loading..", true, false);
@@ -469,11 +502,16 @@ public class AddPrescriptionFragment extends BaseDialogFragment implements View.
                     public void onResponse(String response) {
                         //Log.d("DEBUG",response);
 
-                        // dismissProgressDialog();
+                        dismissProgressDialog();
 
                         DistrictResponse login = MydApplication.gson.fromJson(response, DistrictResponse.class);
 
                         if(login.getStatus()){
+
+                            list_district.clear();
+
+                            Thana t2 = new Thana(KEY_SELECT_DISTRICT);
+                            list_district.add(t2);
 
                             list_district.addAll(login.getThanas());
                             adapterSpDistrict.notifyDataSetChanged();
@@ -502,6 +540,7 @@ public class AddPrescriptionFragment extends BaseDialogFragment implements View.
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("divisionId", String.valueOf(id));
 
                 return params;
             }

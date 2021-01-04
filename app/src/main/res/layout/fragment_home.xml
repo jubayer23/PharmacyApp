@@ -1,79 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".fragment.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
 
-    <FrameLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp">
 
-        <com.trikon.medicine.CustomView.AutoCompleteLoading
-            android:id="@+id/ac_generics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_margin="5dp"
-            android:hint="Generic Name"
-            android:inputType="text"
-            android:maxLines="1"/>
-        the te
-        <ProgressBar
-            android:id="@+id/ac_generics_loading"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical|right"
-            android:layout_marginRight="15dp"
-            android:visibility="gone"/>
-    </FrameLayout>
-
-
-    <FrameLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp">
-
-        <com.trikon.medicine.CustomView.AutoCompleteLoading
-            android:id="@+id/ac_companies"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_margin="5dp"
-            android:hint="Company Name"
-            android:inputType="text"
-            android:maxLines="1"/>
-        the te
-        <ProgressBar
-            android:id="@+id/ac_companies_loading"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical|right"
-            android:layout_marginRight="15dp"
-            android:visibility="gone"/>
-    </FrameLayout>
-
-    <EditText
+    <LinearLayout
+        android:id="@+id/ll_dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="7dp"
-        android:inputType="text"
-        android:maxLines="1"
-        android:id="@+id/ed_medicine_name"
-        android:imeOptions="actionSearch"
-        android:hint="Medicine Name"/>
+        android:orientation="horizontal">
+
+        <FrameLayout android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            >
+
+            <com.trikon.medicine.CustomView.AutoCompleteLoading
+                android:id="@+id/ac_generics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:dropDownWidth="match_parent"
+                android:gravity="center"
+                android:hint="Generic"
+                android:textSize="15sp"
+                android:inputType="text"
+                android:maxLines="1"/>
+
+            <ProgressBar
+                android:id="@+id/ac_generics_loading"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginRight="15dp"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+
+        <FrameLayout android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <com.trikon.medicine.CustomView.AutoCompleteLoading
+                android:id="@+id/ac_companies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:dropDownWidth="match_parent"
+                android:gravity="center"
+                android:hint="Company"
+                android:textSize="15sp"
+                android:inputType="text"
+                android:maxLines="1"/>
+
+            <ProgressBar
+                android:id="@+id/ac_companies_loading"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginRight="15dp"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:inputType="text"
+            android:maxLines="1"
+            android:id="@+id/ed_medicine_name"
+            android:imeOptions="actionSearch"
+            android:textSize="15sp"
+            android:hint="Brand"/>
+
+    </LinearLayout>
+
+
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_medcine_list"
+        android:layout_below="@+id/ll_dropdown"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        />
+        android:layout_marginBottom="160dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginTop="16dp"/>
 
-</LinearLayout>
+
+
+
+</RelativeLayout>

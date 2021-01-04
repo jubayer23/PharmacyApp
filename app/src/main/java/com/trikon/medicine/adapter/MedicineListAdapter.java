@@ -1,5 +1,6 @@
 package com.trikon.medicine.adapter;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.trikon.medicine.R;
+import com.trikon.medicine.appdata.GlobalAppAccess;
 import com.trikon.medicine.model.Medicine;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -27,7 +29,7 @@ public class MedicineListAdapter extends RecyclerView.Adapter<MedicineListAdapte
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_brand_name, tv_strength, tv_dosage, tv_use_for;
+        TextView tv_brand_name, tv_strength, tv_dosage, tv_use_for, tv_start_date, tv_end_date;
         SimpleDraweeView draweeView ;
 
         CardView item_container;
@@ -41,7 +43,9 @@ public class MedicineListAdapter extends RecyclerView.Adapter<MedicineListAdapte
             tv_strength = view.findViewById(R.id.tv_strength);
             tv_dosage = view.findViewById(R.id.tv_dosage);
             tv_use_for = view.findViewById(R.id.tv_use_for);
-            //draweeView = (SimpleDraweeView) view.findViewById(R.id.my_image_view);
+            tv_start_date = view.findViewById(R.id.tv_start_date);
+            tv_end_date = view.findViewById(R.id.tv_end_date);
+            draweeView = view.findViewById(R.id.my_image_view);
 
 
         }
@@ -76,16 +80,23 @@ public class MedicineListAdapter extends RecyclerView.Adapter<MedicineListAdapte
         Medicine rawStock = shopStocks.get(position);
 
         holder.tv_brand_name.setText(rawStock.getBrandName());
-        holder.tv_dosage.setText(rawStock.getDosage());
-        holder.tv_strength.setText(rawStock.getStrength());
-        holder.tv_use_for.setText(rawStock.getUseFor());
+        holder.tv_dosage.setText(rawStock.getCompanyName());
+        holder.tv_strength.setText(rawStock.getGenericName());
+        if(rawStock.getDosage() != null) holder.tv_use_for.setText(rawStock.getDosage());
+        holder.tv_start_date.setText(rawStock.getStartDate());
+        holder.tv_end_date.setText(rawStock.getEndDate());
 
 
+        if(rawStock.getImageUrl() != null){
+            Uri uri = Uri.parse(GlobalAppAccess.BASE_URL_2 + rawStock.getImageUrl());
+
+            holder.draweeView.setImageURI(uri);
+        }
 
         if (position % 2 == 0)
             holder.item_container.setBackgroundColor(ContextCompat.getColor(holder.item_container.getContext(), R.color.gray_lightest));
-        else
-            holder.item_container.setBackgroundColor(ContextCompat.getColor(holder.item_container.getContext(), R.color.white));
+
+        else   holder.item_container.setBackgroundColor(ContextCompat.getColor(holder.item_container.getContext(), R.color.white));
 
 
 

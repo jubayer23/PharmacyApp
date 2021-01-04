@@ -62,15 +62,16 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+
                 android:background="@drawable/square_edittext_gray">
 
                 <Spinner
-                    android:id="@+id/sp_thana"
+                    android:id="@+id/sp_division"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:background="@null"
-                    android:popupBackground="@color/gray"
+                    android:popupBackground="@color/white"
                     android:textSize="25sp" />
 
                 <ImageView
@@ -81,6 +82,8 @@
                     android:padding="5dp"
                     android:src="@drawable/spinner_arrow" />
             </RelativeLayout>
+
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -94,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:background="@null"
-                    android:popupBackground="@color/gray"
+                    android:popupBackground="@color/white"
                     android:textSize="25sp" />
 
                 <ImageView
@@ -105,6 +108,7 @@
                     android:padding="5dp"
                     android:src="@drawable/spinner_arrow" />
             </RelativeLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -113,12 +117,12 @@
                 android:background="@drawable/square_edittext_gray">
 
                 <Spinner
-                    android:id="@+id/sp_division"
+                    android:id="@+id/sp_thana"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:background="@null"
-                    android:popupBackground="@color/gray"
+                    android:popupBackground="@color/white"
                     android:textSize="25sp" />
 
                 <ImageView
@@ -129,7 +133,6 @@
                     android:padding="5dp"
                     android:src="@drawable/spinner_arrow" />
             </RelativeLayout>
-
 
             <ImageView
                 android:layout_width="50dp"

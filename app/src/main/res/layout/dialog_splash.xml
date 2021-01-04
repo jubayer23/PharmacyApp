@@ -22,11 +22,11 @@
         android:weightSum="3.5">
 
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/my_image_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            fresco:placeholderImage="@drawable/ic_sync_gray"/>
+            />
 
 
 

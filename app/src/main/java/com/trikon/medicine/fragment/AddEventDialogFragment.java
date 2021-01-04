@@ -31,6 +31,7 @@ import androidx.core.content.FileProvider;
 
 
 import com.trikon.medicine.BuildConfig;
+import com.trikon.medicine.CustomView.DialogFragmentCallBack;
 import com.trikon.medicine.R;
 import com.trikon.medicine.Utility.AccessDirectory;
 import com.trikon.medicine.Utility.CompressImage;
@@ -59,6 +60,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class AddEventDialogFragment extends BaseDialogFragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
+    private DialogFragmentCallBack dialogFragmentCallBack;
 
     private EditText ed_event_name, ed_description;
     private TextView tv_start_date, tv_end_date, tv_retake;
@@ -81,6 +83,20 @@ public class AddEventDialogFragment extends BaseDialogFragment implements View.O
     private static final String KEY_SELECT_VISIBILITY = "Select Visibility To";
     private Spinner sp_visible_to;
     List<String> list_visible_to = new ArrayList<>();
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        // Verify that the host activity implements the callback interface
+        try {
+            // Instantiate the EditNameDialogListener so we can send events to the host
+            dialogFragmentCallBack = (DialogFragmentCallBack) context;
+        } catch (ClassCastException e) {
+            // The activity doesn't implement the interface, throw exception
+            throw new ClassCastException(context.toString()
+                    + " must implement EditNameDialogListener");
+        }
+    }
 
     @Override
     public void onStart() {
@@ -221,6 +237,7 @@ public class AddEventDialogFragment extends BaseDialogFragment implements View.O
 
                     }
 
+
                     MydApplication.getInstance().getPrefManger().setLog(photoFile.getAbsolutePath());
                     // Continue only if the File was successfully created
                     if (photoFile != null) {
@@ -270,13 +287,13 @@ public class AddEventDialogFragment extends BaseDialogFragment implements View.O
 
         if (DATE_PICKER == TAG_START_DATE) {
 
-            startDate = dayOfMonth + "/" + monthOfYear + "/" + year;
+            startDate = dayOfMonth + "/" + (monthOfYear+1) + "/" + year;
             tv_start_date.setText(startDate);
 
         }
         if (DATE_PICKER == TAG_END_DATE) {
 
-            endDate = dayOfMonth + "/" + monthOfYear + "/" + year;
+            endDate = dayOfMonth + "/" + (monthOfYear+1)  + "/" + year;
             tv_end_date.setText(endDate);
         }
     }
@@ -344,7 +361,7 @@ public class AddEventDialogFragment extends BaseDialogFragment implements View.O
                 @Override
                 public void onError(Context context, UploadInfo uploadInfo, ServerResponse serverResponse, Exception exception) {
                     dismissProgressDialog();
-                    Log.d("DEBUG", serverResponse.getBodyAsString());
+                    //Log.d("DEBUG", serverResponse.getBodyAsString());
                     Toast.makeText(getActivity(), "Error!", Toast.LENGTH_LONG).show();
                 }
                 @Override
@@ -352,6 +369,9 @@ public class AddEventDialogFragment extends BaseDialogFragment implements View.O
                     dismissProgressDialog();
                     Toast.makeText(getActivity(), "Event Added Successfully!", Toast.LENGTH_LONG).show();
                     dismiss();
+
+
+                    dialogFragmentCallBack.onRefresh();
                 }
 
                 @Override

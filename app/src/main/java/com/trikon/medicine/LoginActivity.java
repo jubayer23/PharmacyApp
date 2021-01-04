@@ -124,6 +124,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
            // EmailConnector emailConnector = new EmailConnector(LoginActivity.this);
            // emailConnector.showEmailDialog();
 
+            sendRequestForResetPassword();
+
         }
     }
 
@@ -212,6 +214,69 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                      return params;
                   }
                 }
+                ;
+
+        req.setRetryPolicy(new DefaultRetryPolicy(60000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // TODO Auto-generated method stub
+        MydApplication.getInstance().addToRequestQueue(req);
+    }
+
+
+    public void sendRequestForResetPassword() {
+
+        if(ed_email.getText().toString().isEmpty()){
+            ed_email.setError("Give mobile num and cilck reset");
+            return;
+        }
+
+
+
+        // url = url + "?" + "email=" + email + "&password=" + password;
+        // TODO Auto-generated method stub
+        showProgressDialog("Loading..", true, false);
+
+        final StringRequest req = new StringRequest(Request.Method.POST, GlobalAppAccess.URL_RESET_PASSWORD,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Log.d("DEBUG",response);
+
+                        dismissProgressDialog();
+
+                        UserLoginResponse login = gson.fromJson(response, UserLoginResponse.class);
+
+                        if(login.getStatus()){
+
+                            AlertDialogForAnything.showAlertDialogWhenComplte(LoginActivity.this,"Done","Your reset password request has been processed. The support team will contact you within few days.",false);
+
+
+                        }else{
+                            AlertDialogForAnything.showAlertDialogWhenComplte(LoginActivity.this,"Error","Wrong login information!",false);
+                        }
+
+
+
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                dismissProgressDialog();
+
+                AlertDialogForAnything.showAlertDialogWhenComplte(LoginActivity.this, "Error", "Invalid mobile number", false);
+
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("resetPassword", "true");
+                params.put("mobile", ed_email.getText().toString());
+                return params;
+            }
+        }
                 ;
 
         req.setRetryPolicy(new DefaultRetryPolicy(60000,

@@ -1,5 +1,8 @@
 package com.trikon.medicine.fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,9 +21,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +35,13 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.trikon.medicine.CustomView.AutoCompleteLoading;
+import com.trikon.medicine.CustomView.RecyclerItemClickListener;
+import com.trikon.medicine.HomeActivity;
+import com.trikon.medicine.MedicineDetails;
 import com.trikon.medicine.R;
+import com.trikon.medicine.Utility.CommonMethods;
 import com.trikon.medicine.adapter.CompanyAcAdapter;
 import com.trikon.medicine.adapter.GenericAcAdapter;
 import com.trikon.medicine.adapter.MedicineListAdapter;
@@ -71,13 +82,16 @@ public class HomeFragment extends BaseFragment {
 
     //private OnFragmentInteractionListener mListener;
     private EditText ed_medicine_name;
-    private String genericName, companyName;
+    private String genericName = "", companyName = "";
 
     private RecyclerView rvMedcineList;
     private MedicineListAdapter adapter;
     List<Medicine> medicines = new ArrayList<>();
+    private Medicine hotNewsMedicine = null;
 
     private ProgressBar ac_company_loading, ac_generic_loading;
+
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -133,8 +147,12 @@ public class HomeFragment extends BaseFragment {
         ed_medicine_name = view.findViewById(R.id.ed_medicine_name);
 
 
+
+
         rvMedcineList = view.findViewById(R.id.rv_medcine_list);
         initAutoCompleteAdapter();
+
+
 
         initSearch();
 
@@ -143,14 +161,57 @@ public class HomeFragment extends BaseFragment {
 
     }
 
+    private void changeUIBasedOnHotNews(boolean isHot){
+
+        if(isHot){
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rvMedcineList.getLayoutParams();
+            params.setMargins(0, 0, 0, MydApplication.getInstance().getPixelValue(190));
+            rvMedcineList.setLayoutParams(params);
+
+
+
+
+
+
+
+        }else{
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rvMedcineList.getLayoutParams();
+            params.setMargins(0, 0, 0, MydApplication.getInstance().getPixelValue(0));
+            rvMedcineList.setLayoutParams(params);
+
+
+
+        }
+    }
+
     private void initRecyleView(){
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+       // mLayoutManager.setAutoMeasureEnabled(true);
+        //recyclerView.setLayoutManager(layoutManager);
+
         rvMedcineList.setLayoutManager(mLayoutManager);
+
+        //rvMedcineList.setNestedScrollingEnabled(false);
 
         //Set Adapter
         adapter = new MedicineListAdapter(medicines);
         rvMedcineList.setAdapter(adapter);
+
+        rvMedcineList.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), rvMedcineList ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // do whatever
+                        Intent intent = new Intent(getActivity(), MedicineDetails.class);
+                        intent.putExtra("medicine", medicines.get(position));
+                        startActivity(intent);
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
 
 
 
@@ -165,12 +226,6 @@ public class HomeFragment extends BaseFragment {
 
                     if(ed_medicine_name.getText().toString().isEmpty() ){
                         ed_medicine_name.setError("Required!");
-                        return true;
-                    }else if(genericName == null || genericName.isEmpty()){
-                        ac_generics.setError("Required!!");
-                        return true;
-                    }else if(companyName == null || companyName.isEmpty()){
-                        ac_companies.setError("Required!");
                         return true;
                     }
 
@@ -196,6 +251,8 @@ public class HomeFragment extends BaseFragment {
                                             int position, long id) {
                         //selectedText.setText(autoSuggestAdapter.getObject(position));
                         genericName = adapterAcGeneric.getObject(position);
+                        makeApiCallForSearch();
+                        CommonMethods.hideKeybaord(getActivity());
                     }
                 });
         ac_generics.addTextChangedListener(new TextWatcher() {
@@ -240,6 +297,8 @@ public class HomeFragment extends BaseFragment {
                                             int position, long id) {
                         //selectedText.setText(autoSuggestAdapter.getObject(position));
                         companyName = adapterAcCompany.getObject(position);
+                        makeApiCallForSearch();
+                        CommonMethods.hideKeybaord(getActivity());
                     }
                 });
         ac_companies.addTextChangedListener(new TextWatcher() {
@@ -320,7 +379,7 @@ public class HomeFragment extends BaseFragment {
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("DEBUG",response);
+                       // Log.d("DEBUG",response);
 
                         //parsing logic, please change it as per your requirement
                         List<Generic> generics = new ArrayList<>();
@@ -410,7 +469,7 @@ public class HomeFragment extends BaseFragment {
                         //parsing logic, please change it as per your requirement
 
 
-                        dismissProgressDialog();
+
 
                         MedicineResponse login = MydApplication.gson.fromJson(response, MedicineResponse.class);
                         medicines.clear();
@@ -420,10 +479,27 @@ public class HomeFragment extends BaseFragment {
                             medicines.addAll(login.getMedicines());
                             adapter.notifyDataSetChanged();
 
+                            boolean doesHotNewsExist = false;
+                            for(Medicine medicine: medicines){
+                                if(medicine.isHotNews()){
+
+                                    doesHotNewsExist = true;
+                                    hotNewsMedicine = medicine;
+                                    break;
+                                }
+                            }
+
+
+                            ((HomeActivity)getActivity()).gotHotNews(doesHotNewsExist, hotNewsMedicine);
+                            changeUIBasedOnHotNews(doesHotNewsExist);
+
+
                         }else{
                             AlertDialogForAnything.showAlertDialogWhenComplte(getActivity(),"Error","Wrong login information!",false);
                         }
 
+
+                        dismissProgressDialog();
 
 
                     }
@@ -462,6 +538,15 @@ public class HomeFragment extends BaseFragment {
     public void onDetach() {
         super.onDetach();
        // mListener = null;
+    }
+
+    public void onHotNewsClicked(Medicine hotNewsMedicine)
+    {
+
+        Intent intent = new Intent(getActivity(), MedicineDetails.class);
+        intent.putExtra("medicine", hotNewsMedicine);
+        startActivity(intent);
+
     }
 
 

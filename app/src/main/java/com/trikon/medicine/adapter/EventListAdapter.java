@@ -29,7 +29,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_item_name, tv_item_details;
+        TextView tv_item_name, tv_item_details, tv_start_date, tv_end_date;
         SimpleDraweeView draweeView ;
 
         CardView item_container;
@@ -41,6 +41,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
 
             tv_item_name = view.findViewById(R.id.tv_item_name);
             tv_item_details = view.findViewById(R.id.tv_item_details);
+            tv_start_date = view.findViewById(R.id.tv_start_date);
+            tv_end_date = view.findViewById(R.id.tv_end_date);
             draweeView = (SimpleDraweeView) view.findViewById(R.id.my_image_view);
 
 
@@ -84,6 +86,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
         }
 
         holder.tv_item_details.setText(rawStock.getDescription());
+        holder.tv_start_date.setText("Start: " + rawStock.getStartDate());
+        holder.tv_end_date.setText("End: " + rawStock.getEndDate());
 
 
        /* if (position % 2 == 0)
